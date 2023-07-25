@@ -16,15 +16,13 @@ def validUTF8(data):
     """traversing the array"""
     if number_bytes == 0:
         for val in data:
-            if val >> 7 == 0b0:
-                continue
-            elif val >> 5 == 0b110:
+            if val >> 5 == 0b110 or val >> 5 == 0b1110:
                 number_bytes = 1
             elif val >> 4 == 0b1110:
                 number_bytes = 2
             elif val >> 3 == 0b11110:
                 number_bytes = 3
-            else:
+            elif val >> 7 == 0b10:
                 return False
     else:
         """checking if element at n-1 starts with 0b10"""
