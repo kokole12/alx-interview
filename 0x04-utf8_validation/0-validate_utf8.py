@@ -1,35 +1,29 @@
 #!/usr/bin/python3
 """
-    Implementing utf-8 validation in python
-    walk through
-        Traverse the given array
-        Find the number of bytes for each
-        Check if the next n-1 start with 10, if not return false
-        Finally return true
+UTF-8 Validation
 """
 
 
 def validUTF8(data):
-    """assiging the initial value of bytes"""
-    number_bytes = 0
+    """
+    Data: a list of integers
+    Return: True if data is a valid UTF-8
+    encoding, else return False
+    """
+    byte_count = 0
 
-    """traversing the array"""
-    if number_bytes == 0:
-        for val in data:
-            if val >> 7 == 0b0:
-                continue
-            elif val >> 5 == 0b110:
-                number_bytes = 1
-            elif val >> 4 == 0b1110:
-                number_bytes = 2
-            elif val >> 3 == 0b11110:
-                number_bytes = 3
-            else:
+    for i in data:
+        if byte_count == 0:
+            if i >> 5 == 0b110 or i >> 5 == 0b1110:
+                byte_count = 1
+            elif i >> 4 == 0b1110:
+                byte_count = 2
+            elif i >> 3 == 0b11110:
+                byte_count = 3
+            elif i >> 7 == 0b1:
                 return False
-    else:
-        """checking if element at n-1 starts with 0b10"""
-        if val >> 6 != 0b10:
-            return False
-        number_bytes -= 1
-
-    return number_bytes == 0
+        else:
+            if i >> 6 != 0b10:
+                return False
+            byte_count -= 1
+    return byte_count == 0
